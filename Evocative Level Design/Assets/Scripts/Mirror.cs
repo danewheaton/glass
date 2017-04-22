@@ -21,7 +21,7 @@ public class Mirror : MonoBehaviour
                     (1 << LayerMask.NameToLayer("Door02")) | (1 << LayerMask.NameToLayer("Door02Blocker")) |
                     (1 << LayerMask.NameToLayer("OldCourtyard")) | (1 << LayerMask.NameToLayer("NewChurch")) |
                     (1 << LayerMask.NameToLayer("Portal01")) | (1 << LayerMask.NameToLayer("MirrorDoor1")) |
-			(1 << LayerMask.NameToLayer("MirrorDoor2Blocker")) | (1 << LayerMask.NameToLayer("NotEdgy")));
+			(1 << LayerMask.NameToLayer("MirrorDoor2Blocker")));
     }
 
     public void PlayerIsOnFarSideOfTableOrLookingAway()

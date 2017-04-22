@@ -14,7 +14,7 @@ public class PortableMirror : MonoBehaviour
         if (Input.GetButton("Jump"))
             transform.Rotate(Vector3.up, Input.GetAxis("Mouse X") * rotationSpeed);
 
-        if (Input.GetButtonDown("Cancel"))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             mirror.transform.eulerAngles = new Vector3(mirror.transform.eulerAngles.x, mirror.transform.eulerAngles.y - 180, mirror.transform.eulerAngles.z);
         }

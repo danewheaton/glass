@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityStandardAssets.ImageEffects;
 
 public enum PlayerStates
 {
@@ -50,8 +51,8 @@ public class PlayerTeleportation : MonoBehaviour
     void Start()
     {
         originalScale = transform.localScale;
-        shardTarget = outerShard12.transform.position;
-        shardOriginal = outerShard12.transform.position;
+        if (outerShard12 != null) shardTarget = outerShard12.transform.position;
+        if (outerShard12 != null) shardOriginal = outerShard12.transform.position;
         music = FindObjectOfType<DynamicMusic>();
     }
 
@@ -59,17 +60,17 @@ public class PlayerTeleportation : MonoBehaviour
     {
         #region new shit
 
-        outerShard12.transform.position = Vector3.Lerp(outerShard12.transform.position, shardTarget, Time.deltaTime);
+        if (outerShard12 != null) outerShard12.transform.position = Vector3.Lerp(outerShard12.transform.position, shardTarget, Time.deltaTime);
 
         #endregion
 
 
-        if (Vector3.Distance(transform.position, altar.transform.position) < 1.5f)
+        if (altar != null && Vector3.Distance(transform.position, altar.transform.position) < 1.5f)
         {
             transform.localScale = Vector3.Lerp(transform.localScale, targetScale, 2 * Time.deltaTime);
             GetComponent<vp_FPController>().MotorAcceleration = .06f;
         }
-        else if (Vector3.Distance(transform.position, altar.transform.position) < 5)
+        else if (altar != null && Vector3.Distance(transform.position, altar.transform.position) < 5)
         {
             transform.localScale = Vector3.Lerp(transform.localScale, originalScale, 2 * Time.deltaTime);
             GetComponent<vp_FPController>().MotorAcceleration = .12f;
@@ -476,6 +477,17 @@ public class PlayerTeleportation : MonoBehaviour
             mirror.transform.position += new Vector3(0, 0, 50);
             doorToCatacombs.SetActive(true);
             fakeMirror.SetActive(false);
+
+            Camera.main.cullingMask = ((1 << LayerMask.NameToLayer("Default")) |
+                    (1 << LayerMask.NameToLayer("Ignore Raycast")) | (1 << LayerMask.NameToLayer("UI")) |
+                    (1 << LayerMask.NameToLayer("Door01")) | (1 << LayerMask.NameToLayer("Door01Blocker")) | (1 << LayerMask.NameToLayer("Door02")) |
+                    (1 << LayerMask.NameToLayer("Door02Blocker")) | (1 << LayerMask.NameToLayer("NewChurch")) |
+                    (1 << LayerMask.NameToLayer("MirrorDoor1Blocker")) | (1 << LayerMask.NameToLayer("MirrorDoor2Blocker")) |
+                    (1 << LayerMask.NameToLayer("Glass2")) | (1 << LayerMask.NameToLayer("ObservatoryMirror")) | (1 << LayerMask.NameToLayer("BigShard")));
+
+            GetComponentInChildren<EdgeDetection>().enabled = true;
+            GetComponentInChildren<NoiseAndGrain>().enabled = true;
+
             currentState = PlayerStates.BEFORE_CATACOMBS;
         }
 
