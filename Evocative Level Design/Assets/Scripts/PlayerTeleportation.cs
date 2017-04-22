@@ -292,19 +292,25 @@ public class PlayerTeleportation : MonoBehaviour
         }
 
         #endregion
+
+        else if (other.gameObject == startingDoor)
+        {
+            StartCoroutine(music.ToggleTrack(true, "kickDrum"));
+        }
         
         else if (other.gameObject == hallwayTrigger)
         {
             hallwayWall01.SetActive(false);
             hallwayWall02.SetActive(true);
             StartCoroutine(music.ToggleTrack(true, "snare"));
+            
         }
 
         else if (other.gameObject == teleporterTrigger01)
         {
             transform.position -= new Vector3(10, 0, 10);
             StartCoroutine(music.ToggleTrack(true, "hiHat"));
-            StartCoroutine(music.ToggleTrack(true, "bass"));
+
         }
 
         else if (other.gameObject == triggerAfterTeleporter01)
