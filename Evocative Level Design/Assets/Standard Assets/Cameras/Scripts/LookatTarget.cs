@@ -33,7 +33,7 @@ namespace UnityStandardAssets.Cameras
         {
             base.Start();
             m_OriginalRotation = transform.localRotation;
-            if (GetComponent<Camera>() != null) GetComponent<Camera>().projectionMatrix *= Matrix4x4.Scale(new Vector3(-1, 1, 1));
+            //GetComponent<Camera>().projectionMatrix *= Matrix4x4.Scale(new Vector3(-1, 1, 1));
         }
 
 

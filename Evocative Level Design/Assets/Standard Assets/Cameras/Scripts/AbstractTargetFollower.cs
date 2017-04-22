@@ -21,11 +21,11 @@ namespace UnityStandardAssets.Cameras
 
         protected virtual void Start()
         {
-            // if auto targeting is used, find the object tagged "Player"
+            // if auto targeting is used, find the main camera
             // any class inheriting from this should call base.Start() to perform this action!
             if (m_AutoTargetPlayer)
             {
-                FindAndTargetPlayer();
+                FindAndTargetMainCamera();
             }
             if (m_Target == null) return;
             targetRigidbody = m_Target.GetComponent<Rigidbody>();
@@ -38,7 +38,7 @@ namespace UnityStandardAssets.Cameras
             // if the target has a rigidbody, and isn't kinematic.
             if (m_AutoTargetPlayer && (m_Target == null || !m_Target.gameObject.activeSelf))
             {
-                FindAndTargetPlayer();
+                FindAndTargetMainCamera();
             }
             if (m_UpdateType == UpdateType.FixedUpdate)
             {
@@ -53,7 +53,7 @@ namespace UnityStandardAssets.Cameras
             // if the target does not have a rigidbody, or - does have a rigidbody but is set to kinematic.
             if (m_AutoTargetPlayer && (m_Target == null || !m_Target.gameObject.activeSelf))
             {
-                FindAndTargetPlayer();
+                FindAndTargetMainCamera();
             }
             if (m_UpdateType == UpdateType.LateUpdate)
             {
@@ -68,7 +68,7 @@ namespace UnityStandardAssets.Cameras
             // if the target does not have a rigidbody, or - does have a rigidbody but is set to kinematic.
             if (m_AutoTargetPlayer && (m_Target == null || !m_Target.gameObject.activeSelf))
             {
-                FindAndTargetPlayer();
+                FindAndTargetMainCamera();
             }
             if (m_UpdateType == UpdateType.ManualUpdate)
             {
@@ -79,10 +79,10 @@ namespace UnityStandardAssets.Cameras
         protected abstract void FollowTarget(float deltaTime);
 
 
-        public void FindAndTargetPlayer()
+        public void FindAndTargetMainCamera()
         {
-            // auto target an object tagged player, if no target has been assigned
-            var targetObj = GameObject.FindGameObjectWithTag("Player");
+            // auto target main camera, if no target has been assigned
+            var targetObj = Camera.main;    // CHANGED BY DANE TO MAIN CAMERA!!! NOT ORIGINAL CODE!
             if (targetObj)
             {
                 SetTarget(targetObj.transform);
