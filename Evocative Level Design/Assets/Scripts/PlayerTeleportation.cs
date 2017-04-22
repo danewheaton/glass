@@ -37,6 +37,7 @@ public class PlayerTeleportation : MonoBehaviour
 
     PlayerStates currentState;
     Vector3 originalScale, targetScale = new Vector3(.2f, .2f, .2f), shardTarget, shardOriginal;
+    DynamicMusic music;
 
     int laps, portalsBroken;
     bool passedThrough, hittingForeground, hittingBackground, wentAroundOnce;
@@ -51,6 +52,7 @@ public class PlayerTeleportation : MonoBehaviour
         originalScale = transform.localScale;
         shardTarget = outerShard12.transform.position;
         shardOriginal = outerShard12.transform.position;
+        music = FindObjectOfType<DynamicMusic>();
     }
 
     void Update()
@@ -282,10 +284,15 @@ public class PlayerTeleportation : MonoBehaviour
         {
             hallwayWall01.SetActive(false);
             hallwayWall02.SetActive(true);
+            StartCoroutine(music.ToggleTrack(true, "snare"));
         }
 
         else if (other.gameObject == teleporterTrigger01)
+        {
             transform.position -= new Vector3(10, 0, 10);
+            StartCoroutine(music.ToggleTrack(true, "hiHat"));
+            StartCoroutine(music.ToggleTrack(true, "bass"));
+        }
 
         else if (other.gameObject == triggerAfterTeleporter01)
         {
@@ -307,6 +314,8 @@ public class PlayerTeleportation : MonoBehaviour
         {
             narthexDoor.SetActive(false);
             narthexDoorBlocker.SetActive(true);
+            StartCoroutine(music.ToggleTrack(true, "guitar"));
+            StartCoroutine(music.ToggleTrack(true, "cymbals"));
         }
 
         else if (other.gameObject == altarTeleporter)

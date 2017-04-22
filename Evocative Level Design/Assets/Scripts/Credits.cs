@@ -31,8 +31,6 @@ public class Credits : MonoBehaviour
 
     void Update()
     {
-        print(Time.timeScale);
-
         if (Input.GetKeyDown(KeyCode.Mouse0)) clicked = true;
 
         if (Won) StartCoroutine(FadeOut());
