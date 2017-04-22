@@ -18,7 +18,7 @@ public enum PlayerStates
 
 public class PlayerTeleportation : MonoBehaviour
 {
-    public GameObject courtyardPortal, hiddenHallwayPortal, triggerAfterHiddenHallwayPortal, fallingportal, outerShard12, redFrame, directionalLight, startingDoorTrigger,
+    public GameObject shard1, shard2, shard3, courtyardPortal, hiddenHallwayPortal, triggerAfterHiddenHallwayPortal, fallingportal, outerShard12, redFrame, directionalLight, startingDoorTrigger,
         startingDoorTriggerClockwise, glass0, glass0Copy, startingDoor, startingDoorBlocker, hallwayTrigger, hallwayWall01,
         hallwayWall02, teleporterTrigger01, triggerAfterTeleporter01, wallBlockingWay, teleporterTrigger02Right, teleporterTrigger02Left, narthexDoor,
         narthexDoorTrigger, narthexDoorBlocker, glass1Activator, glass1perspectivePuzzle, glass1gameObject, invisibleDoor01, invisibleDoor01Blocker,
@@ -195,7 +195,20 @@ public class PlayerTeleportation : MonoBehaviour
             }
         }
 
-        if (other.gameObject == redFrame)
+        if (other.gameObject == glassPortals[0])
+        {
+            shard1.SetActive(true);
+        }
+        else if (other.gameObject == glassPortals[1])
+        {
+            shard2.SetActive(true);
+        }
+        else if (other.gameObject == glassPortals[2])
+        {
+            shard3.SetActive(true);
+        }
+
+        else if (other.gameObject == redFrame)
         {
             foreach (Rigidbody r in glassRigidBodies)
             {
