@@ -4,15 +4,16 @@ using System.Collections;
 public class Player_Refectory : MonoBehaviour
 {
     [SerializeField]
-    Collider first, second, third, fourth, fifth;
+    GameObject first, second, third, fourth, fifth;
 
+    [SerializeField]
     FloatingClock clock;
+
     vp_FPController controller;
 
     void Start()
     {
         Physics.gravity = new Vector3(0, -.2f, 0);
-        clock = FindObjectOfType<FloatingClock>();
         controller = GetComponent<vp_FPController>();
     }
 
@@ -23,34 +24,31 @@ public class Player_Refectory : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (controller.MotorAcceleration >= .1f)
+        if (other.gameObject == first)
         {
-            if (other == first)
-            {
-                controller.MotorAcceleration -= .1f;
-                clock.backwardSpeed += .01f;
-                clock.timeMultiplier += .1f;
-            }
-            else if (other == second)
-            {
-                controller.MotorAcceleration -= .1f;
-                clock.timeMultiplier += .1f;
-            }
-            else if (other == second)
-            {
-                controller.MotorAcceleration -= .1f;
-                clock.timeMultiplier += .1f;
-            }
-            else if (other == second)
-            {
-                controller.MotorAcceleration -= .1f;
-                clock.timeMultiplier += .1f;
-            }
-            else if (other == second)
-            {
-                controller.MotorAcceleration -= .1f;
-                clock.timeMultiplier += .1f;
-            }
+            if (controller.MotorAcceleration >= .02f) controller.MotorAcceleration -= .02f;
+            clock.backwardSpeed += .05f;
+            clock.timeMultiplier += .25f;
+        }
+        else if (other.gameObject == second)
+        {
+            if (controller.MotorAcceleration >= .02f) controller.MotorAcceleration -= .015f;
+            clock.timeMultiplier += 2;
+        }
+        else if (other.gameObject == third)
+        {
+            if (controller.MotorAcceleration >= .02f) controller.MotorAcceleration -= .015f;
+            clock.timeMultiplier += 5;
+        }
+        else if (other.gameObject == fourth)
+        {
+            if (controller.MotorAcceleration >= .02f) controller.MotorAcceleration -= .01f;
+            clock.timeMultiplier += 10;
+        }
+        else if (other.gameObject == fifth)
+        {
+            controller.MotorAcceleration = 0;
+            StartCoroutine(FindObjectOfType<Credits>().FadeOut());
         }
     }
 }

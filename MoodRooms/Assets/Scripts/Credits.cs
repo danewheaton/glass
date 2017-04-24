@@ -131,9 +131,10 @@ public class Credits : MonoBehaviour
     {
         Won = false;
         canFreezeTime = true;
+        
 
         float elapsedTime = 0;
-        float timer = 2;
+        float timer = 4;
         while (elapsedTime < timer)
         {
             GameObject.FindGameObjectWithTag("Music").GetComponent<AudioSource>().volume = Mathf.Lerp(1, 0, elapsedTime / timer);
@@ -142,8 +143,11 @@ public class Credits : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-        
-        GetComponent<AudioSource>().volume = 1;
+
+        GameObject.FindGameObjectWithTag("Music").GetComponent<AudioSource>().volume = 0;
+        panelImage.color = Color.black;
+
+        yield return new WaitForSeconds(1);
         GetComponent<AudioSource>().Play();
 
         panelImage.color = Color.black;
