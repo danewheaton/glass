@@ -20,7 +20,7 @@ public enum PlayerStates
 
 public class PlayerTeleportation : MonoBehaviour
 {
-    public GameObject shard1, shard2, shard3, courtyardPortal, hiddenHallwayPortal, triggerAfterHiddenHallwayPortal, fallingportal, outerShard12, redFrame, directionalLight, startingDoorTrigger,
+    public GameObject clock, shard1, shard2, shard3, courtyardPortal, hiddenHallwayPortal, triggerAfterHiddenHallwayPortal, fallingportal, outerShard12, redFrame, directionalLight, startingDoorTrigger,
         startingDoorTriggerClockwise, glass0, glass0Copy, startingDoor, startingDoorBlocker, hallwayTrigger, hallwayWall01,
         hallwayWall02, teleporterTrigger01, triggerAfterTeleporter01, wallBlockingWay, teleporterTrigger02Right, teleporterTrigger02Left, narthexDoor,
         narthexDoorTrigger, narthexDoorBlocker, glass1Activator, glass1perspectivePuzzle, glass1gameObject, invisibleDoor01, invisibleDoor01Blocker,
@@ -457,8 +457,9 @@ public class PlayerTeleportation : MonoBehaviour
         else if (other.gameObject == glass2)
         {
             if (glass2.GetComponent<Collider>().enabled == true)
-                StartCoroutine(creditsPanel.FadeOut());
+                StartCoroutine(creditsPanel.FlashRandomColor());
 
+            clock.SetActive(true);
             transform.position += new Vector3(0, 0, 50);
             mirror.transform.position += new Vector3(0, 0, 50);
             doorToCatacombs.SetActive(true);

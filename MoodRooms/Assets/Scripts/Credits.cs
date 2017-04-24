@@ -11,7 +11,6 @@ public class Credits : MonoBehaviour
     public GameObject flamingoAmbush;
     public float titleScreenFadetime = 1.5f;
 	public float flashFadeTime = 2f;
-    public float adequateAmountOfTimeToTakeAGoodLongGanderAtTheToughGangOfMercilessAviansSurroundingYou = 2;
 	public SoundFeedback soundFeed;
     public Material textColor;
 
@@ -137,7 +136,8 @@ public class Credits : MonoBehaviour
         float timer = 2;
         while (elapsedTime < timer)
         {
-            foreach (AudioSource a in FindObjectsOfType<AudioSource>()) a.volume = Mathf.Lerp(a.volume, 0, elapsedTime / timer / 4);
+            GameObject.FindGameObjectWithTag("Music").GetComponent<AudioSource>().volume = Mathf.Lerp(1, 0, elapsedTime / timer);
+            panelImage.color = Color.Lerp(Color.clear, Color.black, elapsedTime / timer);
 
             elapsedTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();
@@ -145,21 +145,6 @@ public class Credits : MonoBehaviour
         
         GetComponent<AudioSource>().volume = 1;
         GetComponent<AudioSource>().Play();
-
-        yield return new WaitForSeconds(10);
-
-        elapsedTime = 0;
-        timer = 2;
-        while (elapsedTime < timer)
-        {
-            panelImage.color = Color.Lerp(Color.clear, Color.black, elapsedTime / timer);
-
-            elapsedTime += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
-
-        //yield return new WaitForSeconds(1);
-
 
         panelImage.color = Color.black;
         creditsText.color = Color.clear;
