@@ -87,11 +87,11 @@ public class Credits : MonoBehaviour
         alarmText.gameObject.SetActive(false);
         alarm.Stop();
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
 
         GameObject.FindGameObjectWithTag("Player").GetComponent<vp_FPController>().enabled = true;
 
-        timer = 4;
+        timer = 6;
         elapsedTime = 0;
         while (elapsedTime < timer)
         {
