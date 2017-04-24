@@ -27,7 +27,7 @@ public class Player_Refectory : MonoBehaviour
         if (other.gameObject == first)
         {
             if (controller.MotorAcceleration >= .02f) controller.MotorAcceleration -= .02f;
-            clock.backwardSpeed += .05f;
+            clock.backwardSpeed += .03f;
             clock.timeMultiplier += .25f;
         }
         else if (other.gameObject == second)

@@ -5,6 +5,9 @@ public class FloatingClock : MonoBehaviour
 {
     public float timeMultiplier = 1, backwardSpeed = 0;
 
+    [SerializeField]
+    TextMesh amText;
+
     TextMesh timeText;
     float minutes = 41, hours = 9;
 
@@ -35,6 +38,11 @@ public class FloatingClock : MonoBehaviour
             hours++;
             minutes = 0;
         }
-        if (hours > 12) hours = 1;
+        if (hours > 12)
+        {
+            hours = 1;
+            if (amText.text == "am") amText.text = "pm";
+            else if (amText.text == "pm") amText.text = "am";
+        }
     }
 }
