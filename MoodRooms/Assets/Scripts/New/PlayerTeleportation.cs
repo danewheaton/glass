@@ -315,7 +315,11 @@ public class PlayerTeleportation : MonoBehaviour
 
         else if (other.gameObject == triggerAfterTeleporter01)
         {
-            if (wentAroundOnce) wallBlockingWay.SetActive(false);
+            if (wentAroundOnce)
+            {
+                wallBlockingWay.SetActive(false);
+                StartCoroutine(music.ToggleTrack(true, "hiHat"));
+            }
             wentAroundOnce = true;
         }
 
@@ -326,7 +330,6 @@ public class PlayerTeleportation : MonoBehaviour
             if (Vector3.Angle(targetDirection, transform.forward) < 180)
             {
                 transform.position += new Vector3(15, 5, -50);
-                StartCoroutine(music.ToggleTrack(true, "hiHat"));
             }
         }
 
