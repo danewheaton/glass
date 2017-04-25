@@ -461,7 +461,7 @@ public class PlayerTeleportation : MonoBehaviour
             clock.SetActive(true);
             transform.position += new Vector3(0, 0, 50);
             mirror.transform.position += new Vector3(0, 0, 50);
-            doorToCatacombs.SetActive(true);
+            //doorToCatacombs.SetActive(true);
             fakeMirror.SetActive(false);
 
             Camera.main.cullingMask = ((1 << LayerMask.NameToLayer("Default")) |
