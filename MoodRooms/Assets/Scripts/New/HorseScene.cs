@@ -18,7 +18,7 @@ public class HorseScene : MonoBehaviour
     Image panelImage;
 
     [SerializeField]
-    GameObject snoozeButton, horse;
+    GameObject snoozeButton, snoozeText, horse;
 
     void Start()
     {
@@ -32,6 +32,7 @@ public class HorseScene : MonoBehaviour
         alarmText.gameObject.SetActive(false);
         alarm.Stop();
         snoozeButton.SetActive(false);
+        snoozeText.SetActive(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
@@ -72,6 +73,7 @@ public class HorseScene : MonoBehaviour
         music.Stop();
         alarm.Play();
         snoozeButton.SetActive(true);
+        snoozeText.SetActive(true);
         horse.SetActive(false);
     }
 }

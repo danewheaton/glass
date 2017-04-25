@@ -9,7 +9,7 @@ public class HoverCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData ped)
     {
-        Cursor.SetCursor(pointer, Vector2.zero, CursorMode.Auto);
+        Cursor.SetCursor(pointer, Vector2.zero, CursorMode.ForceSoftware);
     }
     public void OnPointerExit(PointerEventData ped)
     {
