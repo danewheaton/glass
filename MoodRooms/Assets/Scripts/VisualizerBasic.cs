@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class VisualizerBasic: MonoBehaviour {
+public class VisualizerBasic: MonoBehaviour
+{
 
 	protected GameObject[] visualizerObjects;
 	public int numberOfObjects;

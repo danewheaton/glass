@@ -8,8 +8,8 @@ public class Player_Corridor : MonoBehaviour
     [SerializeField] GameObject[] rooms;
     [SerializeField] AnimationCurve speedCurve = new AnimationCurve(new Keyframe(0, 2), new Keyframe(50, 50));
     [SerializeField] AudioSource music;
-    [SerializeField] AudioClip clip2, clip3;
     [SerializeField] Font[] fonts;
+    [SerializeField] Visualizer_Size timeText, amtext;
 
     NonUFPSPlayerController controller;
     float originalSpeed;
@@ -45,15 +45,62 @@ public class Player_Corridor : MonoBehaviour
             Color newColor = new Color(materialToChange.color.r + .02f, materialToChange.color.g - .02f, materialToChange.color.b - .02f);
             materialToChange.color = newColor;
 
+            if (counter > 6)
+            {
+                timeText.CrankItX = Random.Range(.05f, .2f);
+                timeText.CrankItY = Random.Range(.05f, .2f);
+                timeText.CrankItZ = Random.Range(.05f, .2f);
+                amtext.CrankItX = Random.Range(.75f, 3f);
+                amtext.CrankItY = Random.Range(.75f, 3f);
+                amtext.CrankItZ = Random.Range(.75f, 3f);
+            }
             if (counter > 10)
             {
-
+                timeText.GetComponent<TextMesh>().font = fonts[Random.Range(0, fonts.Length)];
+            }
+            if (counter > 25)
+            {
+                StartCoroutine(TwistItAllAround());
             }
         }
 
         if (other.gameObject.tag == "Pen" || other.gameObject.tag == "Finish")
         {
             StartCoroutine(ChangeScene());
+        }
+    }
+
+    IEnumerator TwistItAllAround()
+    {
+        int RandomInt = Random.Range(0, 4);
+        Vector3 dir = Vector3.zero;
+        switch (RandomInt)
+        {
+            case 0:
+                dir = Vector3.right;
+                break;
+            case 1:
+                dir = Vector3.left;
+                break;
+            case 2:
+                dir = Vector3.up;
+                break;
+            case 3:
+                dir = Vector3.down;
+                break;
+            default:
+                dir = Vector3.right;
+                break;
+        }
+
+        float elapsedTime = 0;
+        float timer = 1;
+        while (elapsedTime < timer)
+        {
+            timeText.transform.Rotate(dir * (elapsedTime / timer));
+
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
         }
     }
 

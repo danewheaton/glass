@@ -14,8 +14,6 @@ public class Player_Catacombs : MonoBehaviour
 
     private void Update()
     {
-        print(transform.position.y);
-
         facingGabe = Vector3.Angle(gabe.transform.position, transform.forward) >= 60;
 
         if (facingGabe && inTrigger)
