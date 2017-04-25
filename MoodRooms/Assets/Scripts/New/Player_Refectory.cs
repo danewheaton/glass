@@ -13,6 +13,9 @@ public class Player_Refectory : MonoBehaviour
     GameObject first, second, third, fourth, fifth;
 
     [SerializeField]
+    GameObject[] horses;
+
+    [SerializeField]
     FloatingClock clock;
 
     vp_FPController controller;
@@ -24,6 +27,8 @@ public class Player_Refectory : MonoBehaviour
         Physics.gravity = new Vector3(0, -.2f, 0);
         controller = GetComponent<vp_FPController>();
         originalSprite = myTime.sprite;
+
+        StartCoroutine(ActivateHorses());
     }
 
     void OnCollisionEnter(Collision other)
@@ -69,5 +74,14 @@ public class Player_Refectory : MonoBehaviour
     public void ChangeSprite (bool toNineFortyOne)
     {
         myTime.sprite = toNineFortyOne ? nineFortyOne : null;
+    }
+
+    IEnumerator ActivateHorses()
+    {
+        foreach(GameObject g in horses)
+        {
+            yield return new WaitForSeconds(Random.Range(0f, 5f));
+            g.SetActive(true);
+        }
     }
 }
