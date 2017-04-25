@@ -4,6 +4,12 @@ using System.Collections;
 public class Player_Refectory : MonoBehaviour
 {
     [SerializeField]
+    SpriteRenderer myTime;
+
+    [SerializeField]
+    Sprite nineFortyOne;
+
+    [SerializeField]
     GameObject first, second, third, fourth, fifth;
 
     [SerializeField]
@@ -11,10 +17,13 @@ public class Player_Refectory : MonoBehaviour
 
     vp_FPController controller;
 
+    Sprite originalSprite;
+
     void Start()
     {
         Physics.gravity = new Vector3(0, -.2f, 0);
         controller = GetComponent<vp_FPController>();
+        originalSprite = myTime.sprite;
     }
 
     void OnCollisionEnter(Collision other)
@@ -26,29 +35,39 @@ public class Player_Refectory : MonoBehaviour
     {
         if (other.gameObject == first)
         {
-            if (controller.MotorAcceleration >= .02f) controller.MotorAcceleration -= .02f;
-            clock.backwardSpeed += .03f;
+            print("uno");
+            controller.MotorAcceleration = .06f;
+            clock.backwardSpeed += .04f;
             clock.timeMultiplier += .25f;
         }
         else if (other.gameObject == second)
         {
-            if (controller.MotorAcceleration >= .02f) controller.MotorAcceleration -= .015f;
-            clock.timeMultiplier += 2;
+            print("dos");
+            controller.MotorAcceleration = .04f;
+            clock.timeMultiplier += 1;
         }
         else if (other.gameObject == third)
         {
-            if (controller.MotorAcceleration >= .02f) controller.MotorAcceleration -= .015f;
+            print("tres");
+            controller.MotorAcceleration = .025f;
             clock.timeMultiplier += 5;
         }
         else if (other.gameObject == fourth)
         {
-            if (controller.MotorAcceleration >= .02f) controller.MotorAcceleration -= .01f;
+            print("quatro");
+            controller.MotorAcceleration = .0125f;
             clock.timeMultiplier += 10;
         }
         else if (other.gameObject == fifth)
         {
-            controller.MotorAcceleration = 0;
+            print("cinco");
+            controller.MotorAcceleration = .005f;
             StartCoroutine(FindObjectOfType<Credits>().FadeOut());
         }
+    }
+
+    public void ChangeSprite (bool toNineFortyOne)
+    {
+        myTime.sprite = toNineFortyOne ? nineFortyOne : null;
     }
 }

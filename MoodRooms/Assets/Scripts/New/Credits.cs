@@ -89,7 +89,7 @@ public class Credits : MonoBehaviour
         
 
         float elapsedTime = 0;
-        float timer = 4;
+        float timer = 5;
         while (elapsedTime < timer)
         {
             GameObject.FindGameObjectWithTag("Music").GetComponent<AudioSource>().volume = Mathf.Lerp(1, 0, elapsedTime / timer);
@@ -101,15 +101,14 @@ public class Credits : MonoBehaviour
 
         GameObject.FindGameObjectWithTag("Music").GetComponent<AudioSource>().volume = 0;
         panelImage.color = Color.black;
-
-        yield return new WaitForSeconds(1);
+        
         GetComponent<AudioSource>().Play();
 
         panelImage.color = Color.black;
         creditsText.color = Color.clear;
         creditsText.text = "                by                                              \n\n\n\n\n\nJames Robertson          \n\n\n               Dane Wheaton";
 
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(5);
 
         elapsedTime = 0;
         timer = 4;
@@ -216,6 +215,14 @@ public class Credits : MonoBehaviour
     {
         soundFeed.Vwoop();
         panelImage.color = Color.red;
+
+        yield return new WaitForEndOfFrame();
+    }
+
+    public IEnumerator FlashWhite()
+    {
+        soundFeed.Vwoop();
+        panelImage.color = Color.white;
 
         yield return new WaitForEndOfFrame();
     }

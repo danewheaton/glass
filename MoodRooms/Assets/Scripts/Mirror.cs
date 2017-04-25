@@ -47,6 +47,7 @@ public class Mirror : MonoBehaviour
                     (1 << LayerMask.NameToLayer("OldCourtyard")) | (1 << LayerMask.NameToLayer("NewChurch")) |
                     (1 << LayerMask.NameToLayer("Portal01")) | (1 << LayerMask.NameToLayer("MirrorDoor1")) |
 			(1 << LayerMask.NameToLayer("MirrorDoor2Blocker")));
+        FindObjectOfType<Player_Refectory>().ChangeSprite(false);
     }
 
     public void PlayerIsCloseAndLookingAtMirror()
@@ -59,6 +60,7 @@ public class Mirror : MonoBehaviour
                     (1 << LayerMask.NameToLayer("OldCourtyard")) | (1 << LayerMask.NameToLayer("NewChurch")) |
 			(1 << LayerMask.NameToLayer("Portal01")) | (1 << LayerMask.NameToLayer("MirrorDoor1"))))
         StartCoroutine(FlashMirrorSprite());
+        FindObjectOfType<Player_Refectory>().ChangeSprite(true);
     }
 
     IEnumerator FlashMirrorSprite()

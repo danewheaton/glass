@@ -45,7 +45,7 @@ public class Player_Corridor : MonoBehaviour
             Color newColor = new Color(materialToChange.color.r + .02f, materialToChange.color.g - .02f, materialToChange.color.b - .02f);
             materialToChange.color = newColor;
 
-            if (counter > 6)
+            if (counter > 7)
             {
                 timeText.CrankItX = Random.Range(.05f, .2f);
                 timeText.CrankItY = Random.Range(.05f, .2f);
@@ -53,14 +53,17 @@ public class Player_Corridor : MonoBehaviour
                 amtext.CrankItX = Random.Range(.75f, 3f);
                 amtext.CrankItY = Random.Range(.75f, 3f);
                 amtext.CrankItZ = Random.Range(.75f, 3f);
+
+                timeText.GetComponent<TextMesh>().fontStyle = (FontStyle)Random.Range(0, 4);
+                amtext.GetComponent<TextMesh>().fontStyle = (FontStyle)Random.Range(0, 4);
             }
-            if (counter > 10)
-            {
-                timeText.GetComponent<TextMesh>().font = fonts[Random.Range(0, fonts.Length)];
-            }
-            if (counter > 25)
+            if (counter > 20)
             {
                 StartCoroutine(TwistItAllAround());
+            }
+            if (counter > 40)
+            {
+                timeText.GetComponent<TextMesh>().font = fonts[Random.Range(0, fonts.Length)];
             }
         }
 
@@ -72,7 +75,7 @@ public class Player_Corridor : MonoBehaviour
 
     IEnumerator TwistItAllAround()
     {
-        int RandomInt = Random.Range(0, 4);
+        int RandomInt = Random.Range(0, 6);
         Vector3 dir = Vector3.zero;
         switch (RandomInt)
         {
@@ -87,6 +90,12 @@ public class Player_Corridor : MonoBehaviour
                 break;
             case 3:
                 dir = Vector3.down;
+                break;
+            case 4:
+                dir = Vector3.forward;
+                break;
+            case 5:
+                dir = Vector3.back;
                 break;
             default:
                 dir = Vector3.right;

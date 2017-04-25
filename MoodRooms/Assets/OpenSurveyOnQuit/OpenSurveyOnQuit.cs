@@ -12,4 +12,9 @@ public class OpenSurveyOnQuit : MonoBehaviour
     {
         Application.OpenURL("https://goo.gl/forms/tEhPXoeElC5M0tNK2");
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
+    }
 }
