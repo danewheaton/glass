@@ -23,7 +23,7 @@ public class Credits : MonoBehaviour
     {
         panelImage = GetComponent<Image>();
         player = GameObject.FindGameObjectWithTag("Player");
-        originalColor = textColor.color;
+        if (textColor != null) originalColor = textColor.color;
         
         if (SceneManager.GetActiveScene().name == "01") StartCoroutine(StartGame());
         if (SceneManager.GetActiveScene().name == "Refectory") StartCoroutine(RefectoryFadeIn());

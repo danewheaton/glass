@@ -55,6 +55,9 @@ public class PlayerTeleportation : MonoBehaviour
         if (outerShard12 != null) shardTarget = outerShard12.transform.position;
         if (outerShard12 != null) shardOriginal = outerShard12.transform.position;
         music = FindObjectOfType<DynamicMusic>();
+
+        // HACK
+        portalsBroken = glassPortals.Length;
     }
 
     void Update()
@@ -133,7 +136,7 @@ public class PlayerTeleportation : MonoBehaviour
         }
 
         if (mirrorDoor2Blocker != null && mirrorDoor2Blocker.activeInHierarchy) glass2.GetComponent<Renderer>().enabled = false;
-        else glass2.GetComponent<Renderer>().enabled = true;
+        else if (glass2 != null) glass2.GetComponent<Renderer>().enabled = true;
 
         if (Application.isEditor)
         {
@@ -226,13 +229,7 @@ public class PlayerTeleportation : MonoBehaviour
 
         else if (other.gameObject == outerShard12)
         {
-            StartCoroutine(creditsPanel.FlashRandomColor());
-            transform.position += new Vector3(100, 0, 70);
-
-            staticAssets.SetActive(true);
-            dynamicAssets.SetActive(true);
-            observatory2.SetActive(true);
-            observatory1.SetActive(false);
+            StartCoroutine(ChangeScene());
         }
 
         else if (other.gameObject == fallingportal)
@@ -510,7 +507,7 @@ public class PlayerTeleportation : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (other.gameObject == mirror2Trigger)
+        if (mirror2Trigger != null && other.gameObject == mirror2Trigger)
         {
             Vector3 targetDirection = mirror.transform.position - transform.position;
 
@@ -519,42 +516,42 @@ public class PlayerTeleportation : MonoBehaviour
             else currentState = PlayerStates.NORMAL;
         }
 
-        if (other.gameObject == playerStarts[1].gameObject)
-        {
-            GetComponent<vp_FPController>().MotorAcceleration = .03f;
+        //if (other.gameObject == playerStarts[1].gameObject)
+        //{
+        //    GetComponent<vp_FPController>().MotorAcceleration = .03f;
 
-            RaycastHit[] hits;
-            Ray ray = new Ray(Camera.main.transform.position, transform.forward);
-            hits = Physics.RaycastAll(ray, 20);
+        //    RaycastHit[] hits;
+        //    Ray ray = new Ray(Camera.main.transform.position, transform.forward);
+        //    hits = Physics.RaycastAll(ray, 20);
 
-            foreach (RaycastHit hit in hits)
-            {
-                if (hit.transform.gameObject.tag == "Foreground")
-                    hittingForeground = true;
+        //    foreach (RaycastHit hit in hits)
+        //    {
+        //        if (hit.transform.gameObject.tag == "Foreground")
+        //            hittingForeground = true;
 
-                if (hit.transform.gameObject.tag == "Background")
-                    hittingBackground = true;
+        //        if (hit.transform.gameObject.tag == "Background")
+        //            hittingBackground = true;
 
-                if (hittingBackground && hittingForeground)
-                {
-                    Invoke("ActivateGlass1", 1);
-                }
-                if (glass1perspectivePuzzle.activeInHierarchy)
-                    GetComponent<vp_FPController>().MotorAcceleration = .03f;
-                else GetComponent<vp_FPController>().MotorAcceleration = .12f;
-            }
-        }
+        //        if (hittingBackground && hittingForeground)
+        //        {
+        //            Invoke("ActivateGlass1", 1);
+        //        }
+        //        if (glass1perspectivePuzzle.activeInHierarchy)
+        //            GetComponent<vp_FPController>().MotorAcceleration = .03f;
+        //        else GetComponent<vp_FPController>().MotorAcceleration = .12f;
+        //    }
+        //}
     }
 
     void OnTriggerExit (Collider other)
     {
-        if (other.gameObject == playerStarts[1].gameObject)
-        {
-            GetComponent<vp_FPController>().MotorAcceleration = .12f;
+        //if (other.gameObject == playerStarts[1].gameObject)
+        //{
+        //    GetComponent<vp_FPController>().MotorAcceleration = .12f;
 
-            hittingBackground = false;
-            hittingForeground = false;
-        }
+        //    hittingBackground = false;
+        //    hittingForeground = false;
+        //}
 
         if (other.gameObject == mirror2Trigger)
         {
