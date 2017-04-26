@@ -68,12 +68,15 @@ public class HorseScene : MonoBehaviour
         }
 
         alarmText.gameObject.SetActive(true);
-        vp_Utility.LockCursor = !vp_Utility.LockCursor;
-        Cursor.visible = true;
         music.Stop();
         alarm.Play();
         snoozeButton.SetActive(true);
         snoozeText.SetActive(true);
         horse.SetActive(false);
+
+        yield return new WaitForSeconds(4);
+
+        vp_Utility.LockCursor = !vp_Utility.LockCursor;
+        Cursor.visible = true;
     }
 }

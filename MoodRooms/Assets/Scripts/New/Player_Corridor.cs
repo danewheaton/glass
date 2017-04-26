@@ -11,27 +11,44 @@ public class Player_Corridor : MonoBehaviour
     [SerializeField] Font[] fonts;
     [SerializeField] Visualizer_Size timeText, amtext;
 
+    Color[] colors = new Color[12];
     NonUFPSPlayerController controller;
     float originalSpeed;
-    int counter;
-    int speedCharge;
+    int counter, speedCharge;
+    bool startedSinging;
 
     void Start()
     {
         materialToChange.color = new Color(.3f, .3f, .3f);
         controller = GetComponent<NonUFPSPlayerController>();
         originalSpeed = controller.movementSpeed;
+
+        colors[0] = Color.black;
+        colors[1] = Color.black;
+        colors[2] = Color.clear;
+        colors[3] = Color.black;
+        colors[4] = Color.gray;
+        colors[5] = Color.red;
+        colors[6] = Color.grey;
+        colors[7] = Color.clear;
+        colors[8] = Color.red;
+        colors[9] = Color.gray;
+        colors[10] = Color.grey;
+        colors[11] = Color.white;
+
+        Invoke("SetStartedSinging", 19);
     }
 
     void Update()
     {
         if (Input.GetAxis("Vertical") <= 0) speedCharge = 0;
+
+        if (Input.GetKeyDown(KeyCode.Escape)) materialToChange.color = new Color(.3f, .3f, .3f);
     }
 
     void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "Mirror1" &&
-            Vector3.Angle(other.transform.position - transform.position, transform.forward) <= Camera.main.fieldOfView)
+        if (other.gameObject.tag == "Mirror1")
         {
             transform.Rotate(Vector3.up * 180);
             transform.position += new Vector3(10, 0, 0);
@@ -42,10 +59,10 @@ public class Player_Corridor : MonoBehaviour
             if (counter < rooms.Length) rooms[counter].SetActive(true);
             rooms[counter - 1].SetActive(false);
 
-            Color newColor = new Color(materialToChange.color.r + .02f, materialToChange.color.g - .02f, materialToChange.color.b - .02f);
-            materialToChange.color = newColor;
+            Color newWallColor = new Color(materialToChange.color.r + .02f, materialToChange.color.g - .02f, materialToChange.color.b - .02f);
+            materialToChange.color = newWallColor;
 
-            if (counter > 7)
+            if (counter > 5)
             {
                 timeText.CrankItX = Random.Range(.05f, .2f);
                 timeText.CrankItY = Random.Range(.05f, .2f);
@@ -57,13 +74,18 @@ public class Player_Corridor : MonoBehaviour
                 timeText.GetComponent<TextMesh>().fontStyle = (FontStyle)Random.Range(0, 4);
                 amtext.GetComponent<TextMesh>().fontStyle = (FontStyle)Random.Range(0, 4);
             }
-            if (counter > 20)
-            {
-                StartCoroutine(TwistItAllAround());
-            }
             if (counter > 40)
             {
                 timeText.GetComponent<TextMesh>().font = fonts[Random.Range(0, fonts.Length)];
+            }
+
+            if (startedSinging)
+            {
+                Color newTextColor = colors[Random.Range(0, colors.Length)];
+                timeText.GetComponent<TextMesh>().color = newTextColor;
+                amtext.GetComponent<TextMesh>().color = newTextColor;
+
+                if (counter > 20) StartCoroutine(TwistItAllAround());
             }
         }
 
@@ -71,6 +93,11 @@ public class Player_Corridor : MonoBehaviour
         {
             StartCoroutine(ChangeScene());
         }
+    }
+
+    void SetStartedSinging()
+    {
+        startedSinging = true;
     }
 
     IEnumerator TwistItAllAround()
@@ -117,6 +144,7 @@ public class Player_Corridor : MonoBehaviour
     {
         StartCoroutine(FindObjectOfType<Credits>().FlashRed());
         yield return new WaitForSeconds(1);
+        materialToChange.color = new Color(.3f, .3f, .3f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

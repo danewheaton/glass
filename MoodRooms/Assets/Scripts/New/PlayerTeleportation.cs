@@ -40,6 +40,7 @@ public class PlayerTeleportation : MonoBehaviour
     PlayerStates currentState;
     Vector3 originalScale, targetScale = new Vector3(.2f, .2f, .2f), shardTarget, shardOriginal;
     DynamicMusic music;
+    EdgeDetection ed;
 
     int laps, portalsBroken;
     bool passedThrough, hittingForeground, hittingBackground, wentAroundOnce;
@@ -55,9 +56,7 @@ public class PlayerTeleportation : MonoBehaviour
         if (outerShard12 != null) shardTarget = outerShard12.transform.position;
         if (outerShard12 != null) shardOriginal = outerShard12.transform.position;
         music = FindObjectOfType<DynamicMusic>();
-
-        // HACK
-        portalsBroken = glassPortals.Length;
+        ed = GetComponentInChildren<EdgeDetection>();
     }
 
     void Update()
@@ -302,7 +301,7 @@ public class PlayerTeleportation : MonoBehaviour
             hallwayWall01.SetActive(false);
             hallwayWall02.SetActive(true);
             StartCoroutine(music.ToggleTrack(true, "snare"));
-            
+            ed.enabled = true;
         }
 
         else if (other.gameObject == teleporterTrigger01)
