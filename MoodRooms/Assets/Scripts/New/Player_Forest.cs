@@ -98,7 +98,7 @@ public class Player_Forest : MonoBehaviour
 
     IEnumerator ChangeScene()
     {
-        StartCoroutine(FindObjectOfType<Credits>().FlashRed());
+        StartCoroutine(FindObjectOfType<Credits>().TurnScreenRed());
         yield return new WaitForSeconds(1);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }

@@ -7,7 +7,7 @@ public class Credits : MonoBehaviour
 {
     public static bool Won;
     public Image titleScreenPanel;
-    public Text creditsText;
+    public Text creditsText, rewardText;
     public GameObject flamingoAmbush;
     public float titleScreenFadetime = 1.5f;
 	public float flashFadeTime = 2f;
@@ -153,7 +153,53 @@ public class Credits : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+        
+        yield return new WaitForSeconds(2.5f);
+        creditsText.text = "original music                                      \n\n               by                           \n\n\n\n\n                               Matt Sullivan";
 
+        elapsedTime = 0;
+        while (elapsedTime < timer)
+        {
+            creditsText.color = Color.Lerp(Color.clear, textColor.color, elapsedTime / timer);
+
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        yield return new WaitForSeconds(2.5f);
+
+        elapsedTime = 0;
+        while (elapsedTime < timer)
+        {
+            creditsText.color = Color.Lerp(textColor.color, Color.clear, elapsedTime / timer);
+
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        yield return new WaitForSeconds(2.5f);
+        creditsText.text = "                               original 3D art   \n\n          by                           \n\n\n\n\nJoakim Saldamando";
+
+        elapsedTime = 0;
+        while (elapsedTime < timer)
+        {
+            creditsText.color = Color.Lerp(Color.clear, textColor.color, elapsedTime / timer);
+
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        yield return new WaitForSeconds(2.5f);
+
+        elapsedTime = 0;
+        while (elapsedTime < timer)
+        {
+            creditsText.color = Color.Lerp(textColor.color, Color.clear, elapsedTime / timer);
+
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        
         yield return new WaitForSeconds(4);
         creditsText.text = "Thank you for playing!";
 
@@ -211,10 +257,18 @@ public class Credits : MonoBehaviour
         panelImage.color = Color.clear;
     }
 
-    public IEnumerator FlashRed()
+    public IEnumerator TurnScreenRed()
     {
         soundFeed.Vwoop();
         panelImage.color = Color.red;
+
+        yield return new WaitForEndOfFrame();
+    }
+
+    public IEnumerator TurnScreenWhite()
+    {
+        soundFeed.Vwoop();
+        panelImage.color = Color.white;
 
         yield return new WaitForEndOfFrame();
     }
@@ -224,7 +278,17 @@ public class Credits : MonoBehaviour
         soundFeed.Vwoop();
         panelImage.color = Color.white;
 
-        yield return new WaitForEndOfFrame();
+        float timer = flashFadeTime;
+        float elapsedTime = 0;
+        while (elapsedTime < timer)
+        {
+            panelImage.color = Color.Lerp(Color.white, Color.clear, elapsedTime / timer);
+
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        panelImage.color = Color.clear;
     }
 
     public IEnumerator FlashWhite2()
@@ -242,5 +306,36 @@ public class Credits : MonoBehaviour
         }
 
         panelImage.color = Color.clear;
+    }
+
+    public IEnumerator FlashRewardText(int counter)
+    {
+        soundFeed.Vwoop();
+
+        rewardText.text = "+ " + counter + " seconds";
+
+        float timer = .1f;
+        float elapsedTime = 0;
+        while (elapsedTime < timer)
+        {
+            rewardText.color = Color.Lerp(Color.clear, Color.white, elapsedTime / timer);
+
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        rewardText.color = Color.white;
+
+        timer = flashFadeTime;
+        elapsedTime = 0;
+        while (elapsedTime < timer)
+        {
+            rewardText.color = Color.Lerp(Color.white, Color.clear, elapsedTime / timer);
+
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        rewardText.color = Color.clear;
     }
 }

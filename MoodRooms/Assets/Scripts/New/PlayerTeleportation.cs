@@ -20,7 +20,7 @@ public enum PlayerStates
 
 public class PlayerTeleportation : MonoBehaviour
 {
-    public GameObject nineFortyOne, clock, shard1, shard2, shard3, courtyardPortal, hiddenHallwayPortal, triggerAfterHiddenHallwayPortal, fallingportal, outerShard12, redFrame, directionalLight, startingDoorTrigger,
+    public GameObject party, nineFortyOne, clock, courtyardPortal, hiddenHallwayPortal, triggerAfterHiddenHallwayPortal, fallingportal, outerShard12, redFrame, directionalLight, startingDoorTrigger,
         startingDoorTriggerClockwise, glass0, glass0Copy, startingDoor, startingDoorBlocker, hallwayTrigger, hallwayWall01,
         hallwayWall02, teleporterTrigger01, triggerAfterTeleporter01, wallBlockingWay, teleporterTrigger02Right, teleporterTrigger02Left, narthexDoor,
         narthexDoorTrigger, narthexDoorBlocker, glass1Activator, glass1perspectivePuzzle, glass1gameObject, invisibleDoor01, invisibleDoor01Blocker,
@@ -32,9 +32,11 @@ public class PlayerTeleportation : MonoBehaviour
     public GameObject[] upperHallway, glassPortals, scrawlings, disappearingPassage, reappearingNook, observatoryMirrors;
     public Transform refectoryWeenie, startingDoorTransform, teleporter02Transform, glass1Transform, portal01Transform, mirror01Transform, glassShardTransform, fallingPortalCamTransform;
     public Transform[] playerStarts;
-    public Rigidbody[] glassRigidBodies;
+    public Rigidbody[] glassRigidBodies, moreGlassRbs;
+    public Collider[] stairColliders;
     public Material beigeMaterial, whiteMaterial, oldCourtyardMaterial;
     public AudioSource cymbal;
+    public AudioClip victory, crashCymbal;
     public Credits creditsPanel;
 
     PlayerStates currentState;
@@ -42,7 +44,10 @@ public class PlayerTeleportation : MonoBehaviour
     DynamicMusic music;
     EdgeDetection ed;
 
-    int laps, portalsBroken;
+    AudioClip originalChime;
+
+    float timeCounter;
+    int laps, portalsBroken, collectibles;
     bool passedThrough, hittingForeground, hittingBackground, wentAroundOnce;
 
     void OnDrawGizmos()
@@ -61,6 +66,10 @@ public class PlayerTeleportation : MonoBehaviour
 
     void Update()
     {
+        timeCounter += Time.deltaTime;
+        Mathf.Floor(timeCounter);
+        print(collectibles);
+
         #region new shit
 
         if (outerShard12 != null) outerShard12.transform.position = Vector3.Lerp(outerShard12.transform.position, shardTarget, Time.deltaTime);
@@ -177,39 +186,41 @@ public class PlayerTeleportation : MonoBehaviour
     {
         #region new shit
 
-        foreach (GameObject g in glassPortals)
+        if (other.tag == "Oculus")
         {
-            if (other.gameObject == g)
+            if (collectibles < glassRigidBodies.Length) glassRigidBodies[collectibles].gameObject.SetActive(true);
+            
+            collectibles++;
+            other.gameObject.SetActive(false);
+
+            if (glassRigidBodies[glassRigidBodies.Length - 1].gameObject.activeInHierarchy)
             {
-                StartCoroutine(creditsPanel.FlashRandomColor());
-                g.SetActive(false);
-                portalsBroken++;
+                Camera.main.cullingMask = ((1 << LayerMask.NameToLayer("Default")) |
+                        (1 << LayerMask.NameToLayer("Ignore Raycast")) | (1 << LayerMask.NameToLayer("UI")) |
+                        (1 << LayerMask.NameToLayer("Door01")) | (1 << LayerMask.NameToLayer("Door01Blocker")) | (1 << LayerMask.NameToLayer("Door02")) |
+                        (1 << LayerMask.NameToLayer("Door02Blocker")) | (1 << LayerMask.NameToLayer("OldCourtyard")) |
+                        (1 << LayerMask.NameToLayer("Portal01")) | (1 << LayerMask.NameToLayer("ObservatoryMirror")) | (1 << LayerMask.NameToLayer("BigShard")));
 
-                if (portalsBroken >= glassPortals.Length)
-                {
-                    Camera.main.cullingMask = ((1 << LayerMask.NameToLayer("Default")) |
-                            (1 << LayerMask.NameToLayer("Ignore Raycast")) | (1 << LayerMask.NameToLayer("UI")) |
-                            (1 << LayerMask.NameToLayer("Door01")) | (1 << LayerMask.NameToLayer("Door01Blocker")) | (1 << LayerMask.NameToLayer("Door02")) |
-                            (1 << LayerMask.NameToLayer("Door02Blocker")) | (1 << LayerMask.NameToLayer("OldCourtyard")) |
-                            (1 << LayerMask.NameToLayer("Portal01")) | (1 << LayerMask.NameToLayer("ObservatoryMirror")) | (1 << LayerMask.NameToLayer("BigShard")));
+                redFrame.GetComponent<Collider>().enabled = true;
+                foreach (GameObject go in observatoryMirrors) go.SetActive(false);
 
-                    redFrame.GetComponent<Collider>().enabled = true;
-                    foreach (GameObject go in observatoryMirrors) go.SetActive(false);
-                }
+                originalChime = creditsPanel.soundFeed.warpSound;
+                creditsPanel.soundFeed.warpSound = victory;
+                StartCoroutine(creditsPanel.FlashWhite());
+                GameObject[] remainingShards = GameObject.FindGameObjectsWithTag("Oculus");
+                foreach (GameObject g in remainingShards) g.SetActive(false);
             }
+            else
+            {
+                StartCoroutine(creditsPanel.FlashRewardText((int)timeCounter));
+                timeCounter = 0;
+            }
+            
         }
-
-        if (other.gameObject == glassPortals[0])
+        if (other.tag == "RedPillar")
         {
-            shard1.SetActive(true);
-        }
-        else if (other.gameObject == glassPortals[1])
-        {
-            shard2.SetActive(true);
-        }
-        else if (other.gameObject == glassPortals[2])
-        {
-            shard3.SetActive(true);
+            creditsPanel.soundFeed.warpSound = crashCymbal;
+            StartCoroutine(ChangeScene(Color.red));
         }
 
         else if (other.gameObject == redFrame)
@@ -220,15 +231,32 @@ public class PlayerTeleportation : MonoBehaviour
                 r.isKinematic = false;
             }
 
+            foreach (Rigidbody r in moreGlassRbs)
+            {
+                r.transform.parent = null;
+                r.isKinematic = false;
+            }
+
             outerShard12.transform.parent = null;
             outerShard12.transform.eulerAngles -= new Vector3(20, 0, 0);
-            shardTarget -= new Vector3(0, 5, 0);
+            shardTarget -= new Vector3(0, 11, 0);
             cymbal.Play();
         }
 
         else if (other.gameObject == outerShard12)
         {
-            StartCoroutine(ChangeScene());
+            Camera.main.cullingMask = ((1 << LayerMask.NameToLayer("Default")) |
+                            (1 << LayerMask.NameToLayer("Ignore Raycast")) | (1 << LayerMask.NameToLayer("UI")) | (1 << LayerMask.NameToLayer("Water")) |
+                            (1 << LayerMask.NameToLayer("Door01")) | (1 << LayerMask.NameToLayer("Door01Blocker")) | (1 << LayerMask.NameToLayer("Door02")) |
+                            (1 << LayerMask.NameToLayer("Door02Blocker")) | (1 << LayerMask.NameToLayer("OldCourtyard")) |
+                            (1 << LayerMask.NameToLayer("Portal01")) | (1 << LayerMask.NameToLayer("BigShard")));
+
+            foreach (Collider c in stairColliders) c.enabled = true;
+
+            creditsPanel.soundFeed.warpSound = originalChime;
+            StartCoroutine(creditsPanel.FlashWhite());
+            outerShard12.SetActive(false);
+            redFrame.GetComponent<Collider>().enabled = false;
         }
 
         else if (other.gameObject == fallingportal)
@@ -339,7 +367,7 @@ public class PlayerTeleportation : MonoBehaviour
 
         else if (other.gameObject == altarTeleporter)
         {
-            StartCoroutine(ChangeScene());
+            StartCoroutine(ChangeScene(Color.white));
         }
 
         else if (other.gameObject == glass1Activator)
@@ -576,9 +604,12 @@ public class PlayerTeleportation : MonoBehaviour
         }
     }
 
-    IEnumerator ChangeScene()
+    IEnumerator ChangeScene(Color colorToBecome)
     {
-        StartCoroutine(FindObjectOfType<Credits>().FlashWhite());
+        if (colorToBecome == Color.white)
+            StartCoroutine(FindObjectOfType<Credits>().TurnScreenWhite());
+        else if (colorToBecome == Color.red)
+            StartCoroutine(FindObjectOfType<Credits>().TurnScreenRed());
         yield return new WaitForSeconds(1);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }

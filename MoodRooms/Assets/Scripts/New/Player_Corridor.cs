@@ -142,7 +142,7 @@ public class Player_Corridor : MonoBehaviour
 
     IEnumerator ChangeScene()
     {
-        StartCoroutine(FindObjectOfType<Credits>().FlashRed());
+        StartCoroutine(FindObjectOfType<Credits>().TurnScreenRed());
         yield return new WaitForSeconds(1);
         materialToChange.color = new Color(.3f, .3f, .3f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
