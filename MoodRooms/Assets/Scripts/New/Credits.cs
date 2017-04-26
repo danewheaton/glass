@@ -13,6 +13,8 @@ public class Credits : MonoBehaviour
 	public float flashFadeTime = 2f;
 	public SoundFeedback soundFeed;
     public Material textColor;
+    public AudioSource alarm;
+    public AnimationCurve curve;
 
     Image panelImage;
     GameObject player;
@@ -82,6 +84,19 @@ public class Credits : MonoBehaviour
         panelImage.color = Color.clear;
     }
 
+    public IEnumerator AlarmStart()
+    {
+        float elapsedTime = 0;
+        float timer = 10;
+        while (elapsedTime < timer)
+        {
+            alarm.volume = curve.Evaluate(elapsedTime / timer);
+
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
     public IEnumerator FadeOut()
     {
         Won = false;
@@ -93,6 +108,7 @@ public class Credits : MonoBehaviour
         while (elapsedTime < timer)
         {
             GameObject.FindGameObjectWithTag("Music").GetComponent<AudioSource>().volume = Mathf.Lerp(1, 0, elapsedTime / timer);
+            //alarm.volume = Mathf.Lerp(.5f, 0, elapsedTime / timer);
             panelImage.color = Color.Lerp(Color.clear, Color.black, elapsedTime / timer);
 
             elapsedTime += Time.deltaTime;
@@ -100,6 +116,7 @@ public class Credits : MonoBehaviour
         }
 
         GameObject.FindGameObjectWithTag("Music").GetComponent<AudioSource>().volume = 0;
+        //alarm.volume = 0;
         panelImage.color = Color.black;
         
         GetComponent<AudioSource>().Play();
