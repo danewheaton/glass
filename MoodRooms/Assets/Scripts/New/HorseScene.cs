@@ -20,6 +20,9 @@ public class HorseScene : MonoBehaviour
     [SerializeField]
     GameObject snoozeButton, snoozeText, horse;
 
+    [SerializeField]
+    AnimationCurve parabola;
+
     void Start()
     {
         StartCoroutine(Horse());
@@ -61,7 +64,7 @@ public class HorseScene : MonoBehaviour
         float elapsedTime = 0;
         while (elapsedTime < timer)
         {
-            music.volume = Mathf.Lerp(0, 1, elapsedTime / timer);
+            music.volume = parabola.Evaluate(elapsedTime / timer);
 
             elapsedTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();
