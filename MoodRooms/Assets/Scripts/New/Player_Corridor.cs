@@ -25,12 +25,12 @@ public class Player_Corridor : MonoBehaviour
 
         colors[0] = Color.black;
         colors[1] = Color.black;
-        colors[2] = Color.clear;
+        colors[2] = Color.gray;
         colors[3] = Color.black;
         colors[4] = Color.gray;
         colors[5] = Color.red;
         colors[6] = Color.grey;
-        colors[7] = Color.clear;
+        colors[7] = Color.grey;
         colors[8] = Color.red;
         colors[9] = Color.gray;
         colors[10] = Color.grey;
@@ -71,8 +71,25 @@ public class Player_Corridor : MonoBehaviour
                 amtext.CrankItY = Random.Range(.75f, 3f);
                 amtext.CrankItZ = Random.Range(.75f, 3f);
 
+                
                 timeText.GetComponent<TextMesh>().fontStyle = (FontStyle)Random.Range(0, 4);
                 amtext.GetComponent<TextMesh>().fontStyle = (FontStyle)Random.Range(0, 4);
+            }
+            if (counter == 5)
+            {
+                timeText.GetComponent<TextMesh>().text = "7:30";
+            }
+            if (counter == 10)
+            {
+                timeText.GetComponent<TextMesh>().text = "7:31";
+            }
+            if (counter == 20)
+            {
+                timeText.GetComponent<TextMesh>().text = "7:32";
+            }
+            if (counter == 30)
+            {
+                timeText.GetComponent<TextMesh>().text = "7:33";
             }
             if (counter > 40)
             {

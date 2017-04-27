@@ -201,8 +201,8 @@ public class PlayerTeleportation : MonoBehaviour
                         (1 << LayerMask.NameToLayer("Door02Blocker")) | (1 << LayerMask.NameToLayer("OldCourtyard")) |
                         (1 << LayerMask.NameToLayer("Portal01")) | (1 << LayerMask.NameToLayer("ObservatoryMirror")) | (1 << LayerMask.NameToLayer("BigShard")));
 
-                redFrame.GetComponent<Collider>().enabled = true;
-                foreach (GameObject go in observatoryMirrors) go.SetActive(false);
+                //redFrame.GetComponent<Collider>().enabled = true;
+                //foreach (GameObject go in observatoryMirrors) go.SetActive(false);
 
                 originalChime = creditsPanel.soundFeed.warpSound;
                 creditsPanel.soundFeed.warpSound = victory;
