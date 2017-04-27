@@ -212,7 +212,7 @@ public class PlayerTeleportation : MonoBehaviour
             }
             else
             {
-                StartCoroutine(creditsPanel.FlashRewardText((int)timeCounter));
+                StartCoroutine(creditsPanel.FlashRewardText(collectibles));
                 timeCounter = 0;
             }
             

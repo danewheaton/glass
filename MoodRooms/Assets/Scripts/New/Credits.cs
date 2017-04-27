@@ -329,8 +329,37 @@ public class Credits : MonoBehaviour
     {
         soundFeed.Vwoop();
 
-        rewardText.text = "+ " + counter + " seconds";
-
+        switch (counter)
+        {
+            case 0:
+                rewardText.text = "7:01";
+                break;
+            case 1:
+                rewardText.text = "7:02";
+                break;
+            case 2:
+                rewardText.text = "7:03";
+                break;
+            case 3:
+                rewardText.text = "7:04";
+                break;
+            case 4:
+                rewardText.text = "7:05";
+                break;
+            case 5:
+                rewardText.text = "7:06";
+                break;
+            case 6:
+                rewardText.text = "7:07";
+                break;
+            case 7:
+                rewardText.text = "7:08";
+                break;
+            case 8:
+                rewardText.text = "7:09";
+                break;
+        }
+        
         float timer = .1f;
         float elapsedTime = 0;
         while (elapsedTime < timer)
