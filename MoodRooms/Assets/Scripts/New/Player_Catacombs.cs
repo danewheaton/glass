@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityStandardAssets.ImageEffects;
 using System.Collections;
 
 public enum WhichMirror { FIRST, SECOND, THIRD, FOURTH, FIFTH }
@@ -10,7 +11,7 @@ public class Player_Catacombs : MonoBehaviour
     GameObject gabe, gabeTrigger, disappearingWall, end, mirror1, mirror2, mirror3, mirror4, mirror5, doorblocker;
 
     [SerializeField]
-    AudioSource jumpscare, music, doorCreak;
+    AudioSource jumpscare, music, doorCreak, wind;
 
     GameObject mirror;
 
@@ -68,13 +69,13 @@ public class Player_Catacombs : MonoBehaviour
                     whichMirror = WhichMirror.FIFTH;
                     break;
                 case WhichMirror.FIFTH:
-                    Camera.main.cullingMask = ((1 << LayerMask.NameToLayer("Default")) | ((1 << LayerMask.NameToLayer("TransparentFX")) |
+                    Camera.main.cullingMask = (1 << LayerMask.NameToLayer("Default")) | ((1 << LayerMask.NameToLayer("TransparentFX")) |
                     (1 << LayerMask.NameToLayer("Ignore Raycast")) | (1 << LayerMask.NameToLayer("Water")) | (1 << LayerMask.NameToLayer("UI")) |
                     (1 << LayerMask.NameToLayer("Glass1")) | (1 << LayerMask.NameToLayer("Door01")) | (1 << LayerMask.NameToLayer("Door02")) |
-                    (1 << LayerMask.NameToLayer("Portal01")) | (1 << LayerMask.NameToLayer("Glass2"))));
+                    (1 << LayerMask.NameToLayer("Portal01")) | (1 << LayerMask.NameToLayer("Glass2")) | (1 << LayerMask.NameToLayer("ObservatoryMirror")));
                     doorblocker.SetActive(false);
                     doorCreak.Play();
-                    foreach (GameObject g in GameObject.FindGameObjectsWithTag("VRoom")) g.layer = LayerMask.NameToLayer("Default");
+                    //foreach (GameObject g in GameObject.FindGameObjectsWithTag("VRoom")) g.layer = LayerMask.NameToLayer("Default");
                     break;
                 default:
                     break;
@@ -93,10 +94,6 @@ public class Player_Catacombs : MonoBehaviour
             }
         }
         else disappearingWall.SetActive(true);
-
-
-        if (transform.position.y > -4 && !highEnough)
-            StartCoroutine(FadeMusicOut());
     }
 
     private void OnTriggerEnter(Collider other)
@@ -105,6 +102,16 @@ public class Player_Catacombs : MonoBehaviour
         {
             gabe.SetActive(true);
             inTrigger = true;
+        }
+
+        if (other.tag == "Pillar")
+        {
+            wind.Play();
+        }
+
+        if (other.tag == "OpenLabDoor")
+        {
+            StartCoroutine(FadeMusicOut());
         }
 
         if (other.gameObject == end) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
@@ -123,10 +130,25 @@ public class Player_Catacombs : MonoBehaviour
         highEnough = true;
 
         float elapsedTime = 0;
-        float timer = 4;
+        float timer = 10;
         while (elapsedTime < timer)
         {
-            music.volume = Mathf.Lerp(1, 0, elapsedTime / timer);
+            music.volume = Mathf.Lerp(.5f, 0, elapsedTime / timer);
+
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    IEnumerator FadeWindIn()
+    {
+        highEnough = true;
+
+        float elapsedTime = 0;
+        float timer = .5f;
+        while (elapsedTime < timer)
+        {
+            wind.volume = Mathf.Lerp(0, 1, elapsedTime / timer);
 
             elapsedTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();
