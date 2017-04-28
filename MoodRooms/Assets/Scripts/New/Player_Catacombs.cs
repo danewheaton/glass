@@ -30,8 +30,9 @@ public class Player_Catacombs : MonoBehaviour
     {
         //print(Vector3.Distance(transform.position, mirror.transform.position));
         //print(Vector3.Angle(mirror.transform.position, -transform.forward));
+        //print(mirror.name);
         
-        facingMirror = Vector3.Angle(mirror.transform.position, -transform.forward) <= 90 && Vector3.Distance(transform.position, mirror.transform.position) < 3;
+        facingMirror = Vector3.Distance(transform.position, mirror.transform.position) < 3;
 
         if (facingMirror)
         {
@@ -73,6 +74,7 @@ public class Player_Catacombs : MonoBehaviour
                     (1 << LayerMask.NameToLayer("Portal01")) | (1 << LayerMask.NameToLayer("Glass2"))));
                     doorblocker.SetActive(false);
                     doorCreak.Play();
+                    foreach (GameObject g in GameObject.FindGameObjectsWithTag("VRoom")) g.layer = LayerMask.NameToLayer("Default");
                     break;
                 default:
                     break;
