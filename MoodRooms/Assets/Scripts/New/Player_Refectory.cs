@@ -38,6 +38,8 @@ public class Player_Refectory : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (other.tag == "Glass1") myTime.gameObject.SetActive(false);
+
         if (other.gameObject == first)
         {
             //StartCoroutine(FindObjectOfType<Credits>().AlarmStart());
