@@ -30,7 +30,7 @@ public class PlayerTeleportation : MonoBehaviour
         doorToCatacombs, doorToCatacombsTrigger, doorAtBottomOfStairwell, doorAtBottomOfStairwellTrigger,
         doorAtBottomOfStairwellBlocker, catacombsUnlit, catacombsLit, endTrigger, staticAssets, dynamicAssets, observatory1, observatory2;
     public GameObject[] upperHallway, glassPortals, scrawlings, disappearingPassage, reappearingNook, observatoryMirrors;
-    public Transform refectoryWeenie, middle, startingDoorTransform, teleporter02Transform, glass1Transform, portal01Transform, mirror01Transform, glassShardTransform, fallingPortalCamTransform;
+    public Transform cam, refectoryWeenie, middle, startingDoorTransform, teleporter02Transform, glass1Transform, portal01Transform, mirror01Transform, glassShardTransform, fallingPortalCamTransform;
     public Transform[] playerStarts;
     public Rigidbody[] glassRigidBodies, moreGlassRbs;
     public Collider[] stairColliders;
@@ -207,7 +207,9 @@ public class PlayerTeleportation : MonoBehaviour
                 originalChime = creditsPanel.soundFeed.warpSound;
                 creditsPanel.soundFeed.warpSound = victory;
                 StartCoroutine(creditsPanel.FlashWhite());
-                transform.position = middle.position;
+                GetComponent<vp_FPController>().SetPosition(middle.position);
+                GetComponentInChildren<vp_FPCamera>().SetRotation(new Vector2(-44.585f, 135), false);
+                cam.transform.rotation = new Quaternion(-44.585f, 0, 0, 0);
                 GameObject[] remainingShards = GameObject.FindGameObjectsWithTag("Oculus");
                 foreach (GameObject g in remainingShards) g.SetActive(false);
             }
