@@ -68,7 +68,6 @@ public class PlayerTeleportation : MonoBehaviour
     {
         timeCounter += Time.deltaTime;
         Mathf.Floor(timeCounter);
-        print(collectibles);
 
         #region new shit
 

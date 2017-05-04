@@ -33,7 +33,8 @@ public class Player_Catacombs : MonoBehaviour
         //print(Vector3.Angle(mirror.transform.position, -transform.forward));
         //print(mirror.name);
         
-        facingMirror = Vector3.Distance(transform.position, mirror.transform.position) < 3;
+        facingMirror = Vector3.Distance(transform.position, mirror.transform.position) < 3 &&
+            Vector3.Angle(transform.forward, (transform.position - mirror.transform.position)) > 120;
 
         if (facingMirror)
         {
@@ -107,6 +108,11 @@ public class Player_Catacombs : MonoBehaviour
         if (other.tag == "Pillar")
         {
             wind.Play();
+            foreach (ScreenSpaceAmbientObscurance s in GetComponentsInChildren<ScreenSpaceAmbientObscurance>())
+                s.enabled = false;
+            GetComponentInChildren<VignetteAndChromaticAberration>().enabled = false;
+            GetComponentInChildren<NoiseAndGrain>().enabled = false;
+            GetComponentInChildren<GlobalFog>().enabled = false;
         }
 
         if (other.tag == "OpenLabDoor")

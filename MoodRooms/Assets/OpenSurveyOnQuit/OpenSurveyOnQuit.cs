@@ -10,7 +10,7 @@ public class OpenSurveyOnQuit : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        if (!Application.isEditor) Application.OpenURL("https://goo.gl/forms/tEhPXoeElC5M0tNK2");
+        //if (!Application.isEditor) Application.OpenURL("https://goo.gl/forms/tEhPXoeElC5M0tNK2");
     }
 
     private void Update()
